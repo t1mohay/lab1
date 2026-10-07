@@ -1,0 +1,4 @@
+C:/Users/tim11/lab1/build/default-windows/CMakeFiles/lab1.dir
+C:/Users/tim11/lab1/build/default-windows/CMakeFiles/RUN_TESTS.dir
+C:/Users/tim11/lab1/build/default-windows/CMakeFiles/ALL_BUILD.dir
+C:/Users/tim11/lab1/build/default-windows/CMakeFiles/ZERO_CHECK.dir

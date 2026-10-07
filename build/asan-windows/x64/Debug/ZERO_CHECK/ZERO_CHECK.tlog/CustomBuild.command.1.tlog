@@ -1,0 +1,10 @@
+^C:\USERS\TIM11\LAB1\BUILD\ASAN-WINDOWS\CMAKEFILES\08BC59785B816BDB4FBA5777CFFF8C39\GENERATE.STAMP.RULE
+setlocal
+C:\msys64\ucrt64\bin\cmake.exe -SC:/Users/tim11/lab1 -BC:/Users/tim11/lab1/build/asan-windows --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/tim11/lab1/build/asan-windows/cpp_lab1.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

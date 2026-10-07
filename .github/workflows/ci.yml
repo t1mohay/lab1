@@ -1,0 +1,37 @@
+﻿name: 'C++ CI'
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build cmake g++
+
+      - name: Configure (default)
+        run: cmake --preset default
+
+      - name: Build (default)
+        run: cmake --build --preset default
+
+      - name: Test (default)
+        run: ctest --preset default
+
+      - name: Configure (asan)
+        run: cmake --preset asan
+
+      - name: Build (asan)
+        run: cmake --build --preset asan
+
+      - name: Test (asan)
+        run: ctest --preset asan

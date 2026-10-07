@@ -1,0 +1,4 @@
+C:/Users/tim11/lab1/build/asan-windows/CMakeFiles/lab1.dir
+C:/Users/tim11/lab1/build/asan-windows/CMakeFiles/RUN_TESTS.dir
+C:/Users/tim11/lab1/build/asan-windows/CMakeFiles/ALL_BUILD.dir
+C:/Users/tim11/lab1/build/asan-windows/CMakeFiles/ZERO_CHECK.dir
