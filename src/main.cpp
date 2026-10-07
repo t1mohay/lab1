@@ -2,14 +2,12 @@
 
 int main() {
     int values[3] = {1, 2, 3};
-
-    // Ошибка №1 (выход за границы массива) УЖЕ ИСПРАВЛЕНА.
     std::cout << "values[2] = " << values[2] << '\n';
 
-    // НАМЕРЕННАЯ ОШИБКА №2: целочисленное переполнение знакового int (UB).
-    // UndefinedBehaviorSanitizer это обнаружит на Linux.
-    int big = 2147483647;  // INT_MAX
-    big = big + 1;         // signed integer overflow
+    // ОШИБКА ИСПРАВЛЕНА: используем long long вместо int,
+    // чтобы избежать signed integer overflow.
+    long long big = 2147483647LL;
+    big = big + 1;
     std::cout << "big = " << big << '\n';
 
     return 0;
