@@ -12,17 +12,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: ubuntu-latest,  preset: default }
-          - { os: ubuntu-latest,  preset: asan }
-          - { os: ubuntu-latest,  preset: ubsan }
-          - { os: windows-latest, preset: windows-default }
-          - { os: windows-latest, preset: windows-asan }
+          # Версии ОС закреплены: ubuntu-24.04 - как в devcontainer,
+          # windows-2022 - на нём Visual Studio 2022 из пресетов.
+          - { os: ubuntu-24.04, preset: default }
+          - { os: ubuntu-24.04, preset: asan }
+          - { os: ubuntu-24.04, preset: ubsan }
+          - { os: windows-2022, preset: windows-default }
+          - { os: windows-2022, preset: windows-asan }
 
     name: ${{ matrix.os }} / ${{ matrix.preset }}
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Ninja
         if: runner.os == 'Linux'
