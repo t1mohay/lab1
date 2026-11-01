@@ -1,0 +1,109 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "base-linux",
+      "hidden": true,
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" },
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "base-windows",
+      "hidden": true,
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "architecture": { "value": "x64", "strategy": "set" }
+    },
+    {
+      "name": "default",
+      "displayName": "Linux: обычная сборка (GCC)",
+      "inherits": "base-linux"
+    },
+    {
+      "name": "asan",
+      "displayName": "Linux: ASan + UBSan (GCC)",
+      "description": "AddressSanitizer (с LeakSanitizer) и UndefinedBehaviorSanitizer",
+      "inherits": "base-linux",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -g",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined"
+      }
+    },
+    {
+      "name": "ubsan",
+      "displayName": "Linux: UBSan (GCC)",
+      "description": "Только UndefinedBehaviorSanitizer",
+      "inherits": "base-linux",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -g",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=undefined"
+      }
+    },
+    {
+      "name": "windows-default",
+      "displayName": "Windows: обычная сборка (MSVC)",
+      "inherits": "base-windows"
+    },
+    {
+      "name": "windows-asan",
+      "displayName": "Windows: ASan (MSVC)",
+      "description": "AddressSanitizer MSVC. /RTC1 убран из Debug-флагов: он несовместим с ASan",
+      "inherits": "base-windows",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc /fsanitize=address",
+        "CMAKE_CXX_FLAGS_DEBUG": "/Zi /Ob0 /Od",
+        "CMAKE_EXE_LINKER_FLAGS_DEBUG": "/debug /INCREMENTAL:NO"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "default", "configurePreset": "default" },
+    { "name": "asan", "configurePreset": "asan" },
+    { "name": "ubsan", "configurePreset": "ubsan" },
+    { "name": "windows-default", "configurePreset": "windows-default", "configuration": "Debug" },
+    { "name": "windows-asan", "configurePreset": "windows-asan", "configuration": "Debug" }
+  ],
+  "testPresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    { "name": "default", "inherits": "base", "configurePreset": "default" },
+    {
+      "name": "asan",
+      "inherits": "base",
+      "configurePreset": "asan",
+      "environment": {
+        "ASAN_OPTIONS": "detect_leaks=1",
+        "UBSAN_OPTIONS": "print_stacktrace=1"
+      }
+    },
+    {
+      "name": "ubsan",
+      "inherits": "base",
+      "configurePreset": "ubsan",
+      "environment": { "UBSAN_OPTIONS": "print_stacktrace=1" }
+    },
+    {
+      "name": "windows-default",
+      "inherits": "base",
+      "configurePreset": "windows-default",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-asan",
+      "inherits": "base",
+      "configurePreset": "windows-asan",
+      "configuration": "Debug"
+    }
+  ]
+}
