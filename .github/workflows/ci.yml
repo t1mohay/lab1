@@ -40,3 +40,13 @@ jobs:
 
       - name: Test
         run: ctest --preset ${{ matrix.preset }}
+
+       - name: Upload exe
+       if: ${{ always() && runner.os == 'Windows' }}
+       uses: actions/upload-artifact@v4
+       with:
+         name: lab1-${{ matrix.preset }}
+         path: |
+           build/${{ matrix.preset }}/Debug/lab1.exe
+           build/${{ matrix.preset }}/Debug/*.dll
+         if-no-files-found: error
